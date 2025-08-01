@@ -1,0 +1,46 @@
+# Django & Core
+Django>=5.0
+djangorestframework>=3.14
+django-environ
+gunicorn
+whitenoise
+
+# Auth & Security
+djangorestframework-simplejwt
+django-cors-headers
+argon2-cffi                   # Secure password hashing
+
+# File Uploads
+Pillow                        # Image uploads
+django-cleanup                # Auto delete old files
+
+# Payments (Optional – Stripe)
+stripe
+
+# Celery & Background Tasks
+celery
+redis
+
+# Email (Optional – use any backend like SMTP or SendGrid)
+django-anymail[sendgrid]
+
+# Pagination / Filters
+django-filter
+
+# Internationalization & Localization
+Babel
+
+# Testing
+pytest
+pytest-django
+coverage
+
+# Dev Tools
+ipython
+python-decouple
+
+# Optional: Swagger / Redoc API Docs
+drf-yasg
+
+# Deployment (optional)
+dj-database-url
