@@ -36,7 +36,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=30)
     phone_number = models.CharField(max_length=15)
     date_of_birth = models.DateField(null= True, blank= True)
-    profile_image = models.URLField(null=True, blank=True) # cloudinary
+    # profile_image = models.URLField(null=True, blank=True) # cloudinary
     profile_image = models.ImageField(upload_to='media/profile_images', null=True, blank=True) # local
     
     # Permissions & status
