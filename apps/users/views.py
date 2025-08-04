@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect 
+from django.contrib import messages
 # render: Combines a template with a context dictionary and returns an HttpResponse.
 # redirect: Redirects to another URL (usually after form submission).
 
@@ -9,10 +10,11 @@ def register_view(request):
         form = CustomUserCreationForm(request.POST, request.FILES) # Instantiate the registration form with submitted data. Also handles file input (like profile images).
         if form.is_valid(): # form.is_valid() checks if all form validations pass.
             form.save() # If yes, save the new user to the database.
+            messages.success(request, "Account created successfully! Please login to continue.")
             return redirect('login') # Then, redirect to the login page (URL named 'login').
     else: # If GET request (i.e., page load), initialize an empty registration form.
         form = CustomUserCreationForm()
-    return render(request, 'register.html', {'form':form}) # Render the registration form template with the form context.
+    return render(request, 'users/register.html', {'form':form}) # Render the registration form template with the form context.
 
 
 
