@@ -22,3 +22,6 @@ staticfiles/
 .DS_Store
 .ipynb_checkpoints
 .python
+
+# node
+node_modules
