@@ -8,7 +8,7 @@ You create forms.py when you need custom forms to handle user input on the front
 Django has a powerful form system (ModelForm) that connects your database models with the frontend form automatically
 """
 from django import forms 
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from .models import CustomUser, Address
 
 # For registering new users.
@@ -23,6 +23,13 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ['email', 'first_name', 'last_name', 'phone_number', 'date_of_birth', 'profile_image']
+
+# login form
+class LoginForm(AuthenticationForm):
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'password']
+    
 
 # Address Form
 class AddressForm(forms.ModelForm):
