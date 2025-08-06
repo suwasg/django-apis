@@ -74,3 +74,17 @@ def logout_view(request):
     logout(request)
     messages.info(request, "You have been logged out!")
     return redirect('login')
+
+def deactivate_account_view(request):
+    user = request.user
+    user.is_active = False
+    user.save()
+    logout(request)
+    messages.success(request, "Your account has been deactivated.")
+    return redirect('login')
+
+def delete_account_view(request):
+    user = request.user
+    user.delete()
+    messages.success(request, "Your account has been deleted.")
+    return redirect('register')
