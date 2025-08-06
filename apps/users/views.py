@@ -59,12 +59,18 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Welcome {user.get_full_name() or user.first_name} !")
-                return redirect('home')  
+                return redirect('/')  
             else:
-                messages.error(request, "Identifiants invalides.")
+                messages.error(request, "Invalid credentials.")
         else:
-            messages.error(request, "Erreur dans le formulaire. Veuillez vérifier les champs.")
+            messages.error(request, "Error on login.")
     else:
         form = LoginForm()
 
     return render(request, 'registration/login.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    messages.info(request, "You have been logged out!")
+    return redirect('login')
