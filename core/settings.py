@@ -47,6 +47,11 @@ INSTALLED_APPS = [
     "widget_tweaks",
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'apps.users.backends.EmailBackend',
+]
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -131,3 +136,8 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'  # optional, useful for deployment
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGIN_URL = 'login'  # or '/login/' if you're not using named URLs
+LOGIN_REDIRECT_URL = ''  # or your homepage
+LOGOUT_REDIRECT_URL = 'login'
