@@ -1,0 +1,18 @@
+<h2>My Profile</h2>
+<p><strong>Full Name:</strong> {{ user.get_full_name }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+{% if user.profile_image %}
+    <img src="{{ user.profile_image.url }}" alt="Profile Picture" width="150">
+{% endif %}
+
+<h3>Addresses</h3>
+<ul>
+    {% for address in addresses %}
+        <li>{{ address }}</li>
+    {% empty %}
+        <li>No addresses yet.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'profile_update' %}">Edit Profile</a>
+<a href="{% url 'add_address' %}">Add Address</a>

@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect 
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
 # render: Combines a template with a context dictionary and returns an HttpResponse.
 # redirect: Redirects to another URL (usually after form submission).
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
+from .models import *
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm, AddressForm, LoginForm
 # Create your views here.
@@ -17,7 +20,17 @@ def register_view(request):
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form':form}) # Render the registration form template with the form context.
 
-
+@login_required
+def profile_view(request):
+    user = request.user
+    addresses = Address.objects.filter(user = user)
+    # return render(request, 'profile.html', {'user':user, 'addresses':addresses})
+    context = {
+        'user': user,
+        'addresses' : addresses
+    }
+    return render(request, 'users/profile.html', context)
+    
 
 def profile_update_view(request):
     if request.method == 'POST':
@@ -88,3 +101,4 @@ def delete_account_view(request):
     user.delete()
     messages.success(request, "Your account has been deleted.")
     return redirect('register')
+
