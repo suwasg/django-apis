@@ -61,27 +61,21 @@ def add_address_view(request):
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect('/')  # redirect to home if already logged in
+        return redirect('profile')  # already logged in
 
     if request.method == 'POST':
-        form = LoginForm(request, data=request.POST)
+        form = LoginForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get('email')  # or email if using email as login
-            password = form.cleaned_data.get('password')
-            user = authenticate(request, email=email, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, f"Welcome {user.get_full_name() or user.first_name} !")
-                return redirect('/')  
-            else:
-                messages.error(request, "Invalid credentials.")
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, f"Welcome { user.first_name}!")
+            return redirect('profile')
         else:
-            messages.error(request, "Error on login.")
+            messages.error(request, "Login failed.")
     else:
         form = LoginForm()
 
     return render(request, 'registration/login.html', {'form': form})
-
 
 def logout_view(request):
     logout(request)
