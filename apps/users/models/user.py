@@ -64,7 +64,7 @@ class UserSettings(models.Model):
     Model to store user settings/preferences.
     """
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    recieve_emails = models.BooleanField(default=True)
+    receive_emails = models.BooleanField(default=True)
     dark_mode = models.BooleanField(default=False)
     show_email_publicly = models.BooleanField(default=False)
     show_phone_number_publicly = models.BooleanField(default=False)

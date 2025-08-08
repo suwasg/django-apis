@@ -9,9 +9,8 @@ Django has a powerful form system (ModelForm) that connects your database models
 """
 from django import forms 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
-from .models import CustomUser, Address
-from .models import UserSettings
-
+from .models.user import CustomUser, UserSettings
+from .models.address import Address
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 
