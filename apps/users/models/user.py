@@ -57,4 +57,24 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+
+class UserSettings(models.Model):
+    """
+    Model to store user settings/preferences.
+    """
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    recieve_emails = models.BooleanField(default=True)
+    dark_mode = models.BooleanField(default=False)
+    show_email_publicly = models.BooleanField(default=False)
+    show_phone_number_publicly = models.BooleanField(default=False)
+    show_date_of_birth_publicly = models.BooleanField(default=False)
+    show_profile_image_publicly = models.BooleanField(default=False)
+    show_full_name_publicly = models.BooleanField(default=False)
+    show_last_login = models.BooleanField(default=False)
+    show_date_joined = models.BooleanField(default=False)
+
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
