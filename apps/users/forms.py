@@ -10,6 +10,7 @@ Django has a powerful form system (ModelForm) that connects your database models
 from django import forms 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from .models import CustomUser, Address
+from .models import UserSettings
 
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
@@ -54,8 +55,14 @@ class LoginForm(forms.Form):
 
     def get_user(self):
         return self.user
-    
 
+class SettingsForm(forms.ModelForm):
+    class Meta:
+        model = UserSettings
+        fields = ['receive_emails', 'dark_mode', 'show_email_publicly',
+                  'show_phone_number_publicly', 'show_date_of_birth_publicly',
+                  'show_profile_image_publicly', 'show_full_name_publicly',
+                  'show_last_login', 'show_date_joined']
 # Address Form
 class AddressForm(forms.ModelForm):
     class Meta: 
