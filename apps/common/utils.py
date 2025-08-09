@@ -14,3 +14,10 @@ def generate_unique_slug(model_class, field_value):
         unique_slug = f"{slug}-{uuid.uuid4().hex[:8]}"  # Append a short UUID to ensure uniqueness
         # unique_slug = f"{slug}-{num}"
     return unique_slug
+
+def generate_uuid():
+    """
+    Generate a random UUID.
+    """
+    return uuid.uuid4().hex  # Returns a random UUID as a string
+    # return str(uuid.uuid4())  # Returns a random UUID as a string
