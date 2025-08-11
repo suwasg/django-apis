@@ -61,7 +61,7 @@ def add_address_view(request):
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect('profile')  # already logged in
+        return redirect('/users/profile')  # already logged in
 
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -69,7 +69,7 @@ def login_view(request):
             user = form.get_user()
             login(request, user)
             messages.success(request, f"Welcome { user.first_name}!")
-            return redirect('profile')
+            return redirect('/users/profile')
         else:
             messages.error(request, "Login failed.")
     else:
