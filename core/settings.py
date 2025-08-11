@@ -143,6 +143,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'login'  # or '/login/' if you're not using named URLs
 LOGIN_REDIRECT_URL = ''  # or your homepage
+LOGIN_REDIRECT_URL = 'profile'  # redirect to profile after login
 LOGOUT_REDIRECT_URL = 'login'
 
 
