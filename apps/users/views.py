@@ -41,7 +41,7 @@ def profile_update_view(request):
             return redirect('profile')
     else:  # If GET, load the current user data into the form.
         form = CustomUserChangeForm(instance =  request.user)
-    return render(request, 'profile_update.html', {'form':form})
+    return render(request, 'users/profile_update.html', {'form':form})
 
 
 def add_address_view(request):
