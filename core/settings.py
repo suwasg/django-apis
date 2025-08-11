@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
     # local apps
     "apps.users",
-    "apps.common"
+    "apps.common",
 
     # third-party apps
     "widget_tweaks",
