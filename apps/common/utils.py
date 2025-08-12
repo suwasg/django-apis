@@ -1,19 +1,18 @@
 import uuid 
 from django.utils.text import slugify 
 
-def generate_unique_slug(model_class, field_value):
+def generate_unique_slug(model_class, field_value, slug_field="slug", max_length=250):
     """
     Generate a unique slug for a model instance based on a field value.
-    If the slug already exists, append a random UUID to make it unique.
+    Uses short UUIDs for uniqueness when needed.
     """
-    slug = slugify(field_value)
-    unique_slug = slug
-    num = 1  # Counter to append if slug is not unique
-    # Check if the slug already exists in the model
-    while model_class.objects.filter(slug=unique_slug).exists():
-        unique_slug = f"{slug}-{uuid.uuid4().hex[:8]}"  # Append a short UUID to ensure uniqueness
-        # unique_slug = f"{slug}-{num}"
-    return unique_slug
+    base_slug = slugify(field_value)[:max_length]  # truncate base
+    slug = base_slug
+    while model_class.objects.filter(**{slug_field: slug}).exists():
+        suffix = uuid.uuid4().hex[:8]
+        # Ensure final slug length stays within limit
+        slug = f"{base_slug[:max_length - len(suffix) - 1]}-{suffix}"
+    return slug
 
 def generate_uuid():
     """
