@@ -98,3 +98,57 @@ class Tag(models.Model):
         if not self.slug:
             self.slug = generate_unique_slug(Tag, self.name, slug_field='slug')
         super().save(*args, **kwargs)
+
+class Product(models.Model):
+    """Product Model.
+    Represents a product with:
+    - Name, description, price, stock quantity
+    - Category and tags for organization
+    - SEO metadata
+    - Image upload support
+    - Timestamps for creation and last update"""
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    description = models.TextField(blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stock_quantity = models.PositiveIntegerField(default=0)
+    # Foreign key to Category model for product categorization
+    # related_name='products' allows easy access to products in a category
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    tags = models.ManyToManyField(Tag, blank=True, related_name='products')
+
+    image = models.ImageField(upload_to='products/', blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    # SEO metadata fields
+    meta_title = models.CharField(max_length=255, blank=True)
+    meta_description = models.TextField(blank=True)
+    meta_keywords = models.CharField(max_length=255, blank=True)
+    # Auto timestamps for creation and last update
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'Products'
+        ordering = ['name']
+        indexes = [
+            models.Index(fields=['slug']),
+            models.Index(fields=['created_at']),
+            models.Index(fields=['name']),
+            models.Index(fields=['is_active']),
+        ]
+    
+    def __str__(self):
+        """String representation for admin panel and shell."""
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        """Override save method to auto-generate slug if not provided.
+        Uses a helper function `generate_unique_slug` to ensure uniqueness."""
+        if not self.slug:
+            self.slug = generate_unique_slug(Product, self.name, slug_field='slug')
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        """Returns the URL for this product instance.
+        Uses Django's reverse function to generate URL based on slug."""
+        return reverse('product_detail', kwargs={'slug': self.slug})
