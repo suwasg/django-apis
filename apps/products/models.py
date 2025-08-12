@@ -70,3 +70,31 @@ class Category(models.Model):
         """
         return reverse('category_detail', kwargs={'slug': self.slug})
     
+class Tag(models.Model):
+    """Product Tag Model.
+    Represents a tag that can be associated with products.
+    Tags are used for categorization and filtering products."""
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'Tags'
+        ordering = ['name']
+        indexes = [
+            models.Index(fields=['slug']),
+            models.Index(fields=['created_at']),
+            models.Index(fields=['name']),
+        ]
+    
+    def __str__(self):
+        """String representation for admin panel and shell."""
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        """Override save method to auto-generate slug if not provided.
+        Uses a helper function `generate_unique_slug` to ensure uniqueness."""
+        if not self.slug:
+            self.slug = generate_unique_slug(Tag, self.name, slug_field='slug')
+        super().save(*args, **kwargs)
