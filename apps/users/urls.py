@@ -1,9 +1,22 @@
 from django.urls import path
 from apps.users import views
-
-
 # cbvs
-from apps.users.views import (AddressCreateView, AddressDetailView, AddressListView, AddressUpdateView, AddressDeleteView)
+from apps.users.views import (
+    AddressCreateView, 
+    AddressDetailView, 
+    AddressListView, 
+    AddressUpdateView, 
+    AddressDeleteView, 
+    register_view,
+    login_view,
+    logout_view,
+    profile_view,
+    profile_update_view,
+    deactivate_account_view,
+    delete_account_view,
+
+    UserSettingsUpdateView,
+    )
 
 urlpatterns = [
     # Auth
@@ -27,4 +40,7 @@ urlpatterns = [
     # Account
     path("account/deactivate/", views.deactivate_account_view, name="account_deactivate"),
     path("account/delete/", views.delete_account_view, name="account_delete"),
+
+    # Settings
+    path("settings/", UserSettingsUpdateView.as_view() , name="user_settings"),
 ]

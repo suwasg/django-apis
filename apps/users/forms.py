@@ -58,10 +58,44 @@ class LoginForm(forms.Form):
 class SettingsForm(forms.ModelForm):
     class Meta:
         model = UserSettings
-        fields = ['receive_emails', 'dark_mode', 'show_email_publicly',
-                  'show_phone_number_publicly', 'show_date_of_birth_publicly',
-                  'show_profile_image_publicly', 'show_full_name_publicly',
-                  'show_last_login', 'show_date_joined']
+        fields = [
+            'receive_emails',
+            'dark_mode',
+            'show_email_publicly',
+            'show_phone_number_publicly',
+            'show_date_of_birth_publicly',
+            'show_profile_image_publicly',
+            'show_full_name_publicly',
+            'show_last_login',
+            'show_date_joined',
+        ]
+        widgets = {
+            'receive_emails': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+            'dark_mode': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+            'show_email_publicly': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+            'show_phone_number_publicly': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+            'show_date_of_birth_publicly': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+            'show_profile_image_publicly': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+            'show_full_name_publicly': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+            'show_last_login': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+            'show_date_joined': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+        }
+        labels = {
+            'receive_emails': "Receive Email Notifications",
+            'dark_mode': "Enable Dark Mode",
+            'show_email_publicly': "Show Email to Public",
+            'show_phone_number_publicly': "Show Phone Number to Public",
+            'show_date_of_birth_publicly': "Show Date of Birth to Public",
+            'show_profile_image_publicly': "Show Profile Image to Public",
+            'show_full_name_publicly': "Show Full Name to Public",
+            'show_last_login': "Show Last Login Time",
+            'show_date_joined': "Show Account Creation Date",
+        }
+        help_texts = {
+            'receive_emails': "Turn on to get updates and notifications.",
+            'dark_mode': "Switch between light and dark theme.",
+        }
+
 # Address Form
 class AddressForm(forms.ModelForm):
     class Meta: 
