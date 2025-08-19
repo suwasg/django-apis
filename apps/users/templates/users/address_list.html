@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-2xl mx-auto mt-10">
+  <h2 class="text-2xl font-bold mb-4">My Addresses</h2>
+  <a href="{% url 'address_add' %}" class="px-4 py-2 bg-blue-500 text-white rounded">Add Address</a>
+  <ul class="mt-4 space-y-2">
+    {% for address in addresses %}
+      <li class="p-4 bg-white shadow rounded">
+        <p>{{ address.address_type }}, {{ address.city }}</p>
+        <p>{{ address.street }}</p>
+        <p>{{ address.country }}</p>
+        <p>{{ address.state }}</p>
+        <p>{{ address.postal_code }}</p>
+        <a href="{% url 'address_detail' address.pk %}" class="text-blue-600">View</a> | 
+        <a href="{% url 'address_edit' address.pk %}" class="text-green-600">Edit</a> | 
+        <a href="{% url 'address_delete' address.pk %}" class="text-red-600">Delete</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% if addresses|length == 0 %}
+    <p>No addresses yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
