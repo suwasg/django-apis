@@ -1,3 +1,4 @@
+<!-- Profile Container -->
 <div class="max-w-3xl mx-auto mt-8 bg-white shadow-md rounded-lg p-6">
   <h2 class="text-2xl font-bold mb-4">My Profile</h2>
 
@@ -36,26 +37,46 @@
 
   <hr class="my-6">
 
-  <!-- Settings -->
-  <h3 class="text-xl font-semibold mb-2">Settings</h3>
-  <ul class="list-disc list-inside text-gray-700">
-    <li>Receive Emails: {{ settings.receive_emails|yesno:"Yes,No" }}</li>
-    <li>Dark Mode: {{ settings.dark_mode|yesno:"Enabled,Disabled" }}</li>
-    <li>Show Email Publicly: {{ settings.show_email_publicly|yesno:"Yes,No" }}</li>
-    <li>Show Phone Publicly: {{ settings.show_phone_number_publicly|yesno:"Yes,No" }}</li>
-    <li>Show DOB Publicly: {{ settings.show_date_of_birth_publicly|yesno:"Yes,No" }}</li>
-    <li>Show Profile Image: {{ settings.show_profile_image_publicly|yesno:"Yes,No" }}</li>
-    <li>Show Full Name: {{ settings.show_full_name_publicly|yesno:"Yes,No" }}</li>
-    <li>Show Last Login: {{ settings.show_last_login|yesno:"Yes,No" }}</li>
-    <li>Show Date Joined: {{ settings.show_date_joined|yesno:"Yes,No" }}</li>
-  </ul>
+  <!-- Settings Accordion -->
+  <div x-data="{ open: false }" class="mt-4">
+    <button 
+      @click="open = !open"
+      class="w-full flex justify-between items-center px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition"
+    >
+      <span class="text-lg font-semibold">Settings</span>
+      <svg :class="{'rotate-180': open}" class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </button>
 
-  <div class="mt-6 flex space-x-4">
-    <a href="{% url 'profile_update' %}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+    <div x-show="open" x-transition class="mt-3 border rounded p-4 bg-gray-50">
+        <h3>Settings</h3>
+<ul>
+    <li>📧 Receive Emails: {{ settings.receive_emails|yesno:"✅ Yes,❌ No" }}</li>
+    <li>🌙 Dark Mode: {{ settings.dark_mode|yesno:"🌙 On,☀️ Off" }}</li>
+    <li>📤 Show Email Publicly: {{ settings.show_email_publicly|yesno:"👀 Visible,🙈 Hidden" }}</li>
+    <li>📱 Show Phone Number Publicly: {{ settings.show_phone_number_publicly|yesno:"👀 Visible,🙈 Hidden" }}</li>
+    <li>🎂 Show Date of Birth Publicly: {{ settings.show_date_of_birth_publicly|yesno:"👀 Visible,🙈 Hidden" }}</li>
+    <li>🖼️ Show Profile Image: {{ settings.show_profile_image_publicly|yesno:"👀 Visible,🙈 Hidden" }}</li>
+    <li>📝 Show Full Name: {{ settings.show_full_name_publicly|yesno:"👀 Visible,🙈 Hidden" }}</li>
+    <li>⏳ Show Last Login: {{ settings.show_last_login|yesno:"👀 Visible,🙈 Hidden" }}</li>
+    <li>📅 Show Date Joined: {{ settings.show_date_joined|yesno:"👀 Visible,🙈 Hidden" }}</li>
+</ul>
+
+      <div class="mt-4">
+        <a href="{% url 'settings_update' %}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          Edit Settings
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6">
+    <a href="{% url 'profile_update' %}" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
       Edit Profile
-    </a>
-    <a href="{% url 'settings_update' %}" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
-      Edit Settings
     </a>
   </div>
 </div>
+
+<!-- Alpine.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>

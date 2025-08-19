@@ -5,6 +5,10 @@ from django.contrib.auth.decorators import login_required
 from ..models import *
 from ..forms import  CustomUserChangeForm
 
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+
 @login_required
 def profile_view(request):
     user = request.user
@@ -17,7 +21,25 @@ def profile_view(request):
         'settings': settings,
     }
     return render(request, 'users/profile.html', context)
-    
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = "users/profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Get user info
+        user = self.request.user
+        context["user"] = user
+
+        # Get addresses
+        context["addresses"] = Address.objects.filter(user=user)
+
+        # ✅ Ensure settings always exist
+        settings_obj, created = UserSettings.objects.get_or_create(user=user)
+        context["settings"] = settings_obj
+
+        return context    
 
 def profile_update_view(request):
     if request.method == 'POST':

@@ -14,7 +14,7 @@ from apps.users.views import (
     profile_update_view,
     deactivate_account_view,
     delete_account_view,
-
+    ProfileView,
     UserSettingsUpdateView,
     )
 
@@ -25,7 +25,7 @@ urlpatterns = [
     path("logout/", views.logout_view, name="logout"),
 
     # Profile
-    path("profile/", views.profile_view, name="profile"),
+    path("profile/", ProfileView.as_view(), name="profile"),
     path("profile/update/", views.profile_update_view, name="profile_update"),
 
     # Addresses
