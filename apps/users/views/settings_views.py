@@ -15,3 +15,5 @@ def settings_view(request):
     else:
         form = SettingsForm(instance=settings_object)
     return render(request, 'users/settings.html', {'form': form}) 
+
+# (future) UserSettingsUpdateView
