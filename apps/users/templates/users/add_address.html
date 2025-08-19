@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-10 bg-white shadow-md rounded p-6 mb-10">
+  <h2 class="text-2xl font-bold mb-4">Add Address</h2>
+  
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+    
+    <button type="submit" class="w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600">
+      Add Address
+    </button>
+  </form>
+</div>
+{% endblock %}

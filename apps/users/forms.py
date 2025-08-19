@@ -66,4 +66,4 @@ class SettingsForm(forms.ModelForm):
 class AddressForm(forms.ModelForm):
     class Meta: 
         model = Address
-        fields = ['address_type', 'city', 'state', 'postal_code', 'country']
+        fields = ['address_type','street', 'city', 'state', 'postal_code', 'country']

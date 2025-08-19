@@ -9,7 +9,12 @@
 <h3>Addresses</h3>
 <ul>
     {% for address in addresses %}
-        <li>{{ address }}</li>
+        <li>{{ address.address_type }}</li>
+        <li>{{ address.street }}</li>
+        <li>{{ address.city }}</li>
+        <li>{{ address.state }}</li>
+        <li>{{ address.postal_code }}</li>
+        <li>{{ address.country }}</li>
     {% empty %}
         <li>No addresses yet.</li>
     {% endfor %}
