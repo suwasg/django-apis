@@ -44,21 +44,6 @@ def profile_update_view(request):
     return render(request, 'users/profile_update.html', {'form':form})
 
 
-def add_address_view(request):
-    if request.method == 'POST':
-        form = AddressForm(request.POST) # If form is submitted, populate with POST data.
-
-        if form.is_valid():
-            address = form.save(commit = False) # If valid, create an address object but don’t save it yet (commit=False). You do this because you still need to assign the user.
-            address.user =  request.user # Attach the currently logged-in user to the address.
-            address.save() # Save the address.
-            return redirect('profile') # Redirect to the profile page.
-
-    else: # For GET request, create an empty address form.
-        form = AddressForm()
-    return render(request, 'add_address.html', {'form':form})
-
-
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('/users/profile')  # already logged in
