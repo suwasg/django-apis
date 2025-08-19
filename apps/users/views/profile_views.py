@@ -9,10 +9,12 @@ from ..forms import  CustomUserChangeForm
 def profile_view(request):
     user = request.user
     addresses = Address.objects.filter(user = user)
+    settings = UserSettings.objects.filter(user = user)
     # return render(request, 'profile.html', {'user':user, 'addresses':addresses})
     context = {
         'user': user,
-        'addresses' : addresses
+        'addresses' : addresses,
+        'settings': settings,
     }
     return render(request, 'users/profile.html', context)
     

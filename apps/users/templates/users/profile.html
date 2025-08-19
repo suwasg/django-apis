@@ -1,23 +1,61 @@
-<h2>My Profile</h2>
-<p><strong>First Name:</strong> {{ user.first_name }}</p>
-<p><strong>Last Name:</strong> {{ user.last_name }}</p>
-<p><strong>Email:</strong> {{ user.email }}</p>
-{% if user.profile_image %}
-    <img src="{{ user.profile_image.url }}" alt="Profile Picture" width="150">
-{% endif %}
+<div class="max-w-3xl mx-auto mt-8 bg-white shadow-md rounded-lg p-6">
+  <h2 class="text-2xl font-bold mb-4">My Profile</h2>
 
-<h3>Addresses</h3>
-<ul>
-    {% for address in addresses %}
-        <li>{{ address.address_type }}</li>
-        <li>{{ address.street }}</li>
-        <li>{{ address.city }}</li>
-        <li>{{ address.state }}</li>
-        <li>{{ address.postal_code }}</li>
-        <li>{{ address.country }}</li>
-    {% empty %}
-        <li>No addresses yet.</li>
-    {% endfor %}
-</ul>
+  <!-- Profile Info -->
+  <div class="mb-6">
+    <p><strong>First Name:</strong> {{ user.first_name }}</p>
+    <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    {% if user.profile_image %}
+      <div class="mt-2">
+        <img src="{{ user.profile_image.url }}" alt="Profile Picture" class="rounded-full w-32 h-32 object-cover">
+      </div>
+    {% endif %}
+  </div>
 
-<a href="{% url 'profile_update' %}">Edit Profile</a>
+  <hr class="my-6">
+
+  <!-- Addresses -->
+  <h3 class="text-xl font-semibold mb-2">Addresses</h3>
+  {% if addresses %}
+    <div class="space-y-4">
+      {% for address in addresses %}
+        <div class="p-4 border rounded bg-gray-50">
+          <p><strong>Type:</strong> {{ address.address_type }}</p>
+          <p><strong>Street:</strong> {{ address.street }}</p>
+          <p><strong>City:</strong> {{ address.city }}</p>
+          <p><strong>State:</strong> {{ address.state }}</p>
+          <p><strong>Postal Code:</strong> {{ address.postal_code }}</p>
+          <p><strong>Country:</strong> {{ address.country }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-gray-600">No addresses yet.</p>
+  {% endif %}
+
+  <hr class="my-6">
+
+  <!-- Settings -->
+  <h3 class="text-xl font-semibold mb-2">Settings</h3>
+  <ul class="list-disc list-inside text-gray-700">
+    <li>Receive Emails: {{ settings.receive_emails|yesno:"Yes,No" }}</li>
+    <li>Dark Mode: {{ settings.dark_mode|yesno:"Enabled,Disabled" }}</li>
+    <li>Show Email Publicly: {{ settings.show_email_publicly|yesno:"Yes,No" }}</li>
+    <li>Show Phone Publicly: {{ settings.show_phone_number_publicly|yesno:"Yes,No" }}</li>
+    <li>Show DOB Publicly: {{ settings.show_date_of_birth_publicly|yesno:"Yes,No" }}</li>
+    <li>Show Profile Image: {{ settings.show_profile_image_publicly|yesno:"Yes,No" }}</li>
+    <li>Show Full Name: {{ settings.show_full_name_publicly|yesno:"Yes,No" }}</li>
+    <li>Show Last Login: {{ settings.show_last_login|yesno:"Yes,No" }}</li>
+    <li>Show Date Joined: {{ settings.show_date_joined|yesno:"Yes,No" }}</li>
+  </ul>
+
+  <div class="mt-6 flex space-x-4">
+    <a href="{% url 'profile_update' %}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+      Edit Profile
+    </a>
+    <a href="{% url 'settings_update' %}" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+      Edit Settings
+    </a>
+  </div>
+</div>

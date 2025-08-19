@@ -42,5 +42,5 @@ urlpatterns = [
     path("account/delete/", views.delete_account_view, name="account_delete"),
 
     # Settings
-    path("settings/", UserSettingsUpdateView.as_view() , name="user_settings"),
+    path("settings/update/", UserSettingsUpdateView.as_view() , name="settings_update"),
 ]
