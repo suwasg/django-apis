@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from django.utils import timezone
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils.text import slugify
 
 from common.utils import generate_unique_slug, generate_uuid
 # Create your models here.
@@ -29,6 +31,10 @@ class Category(models.Model):
     meta_title = models.CharField(max_length=255, blank=True)
     meta_description = models.TextField(blank=True)
     meta_keywords = models.CharField(max_length=255, blank=True)
+    # for manual sorting and highlight
+    position = models.PositiveIntegerField(default=0, help_text="Manual sort order")
+    featured = models.BooleanField(default=False, help_text="Highlight this category on homepage")
+
     # Auto timestamps for creation and last update
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -60,7 +66,7 @@ class Category(models.Model):
         """
         if not self.slug:
             self.slug = generate_unique_slug(Category, self.name, slug_field='slug')
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
     def get_absolute_url(self):
         """
         Returns the URL for this category instance.
@@ -76,6 +82,12 @@ class Tag(models.Model):
     Tags are used for categorization and filtering products."""
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True, blank=True)
+    tag_type = models.CharField(max_length=50, blank=True, help_text="Optional: e.g., Color, Size, Feature")
+    # SEO metadata fields
+    meta_title = models.CharField(max_length=255, blank=True)
+    meta_keywords = models.CharField(max_length=255, blank=True)
+    meta_description = models.TextField(blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -111,7 +123,39 @@ class Product(models.Model):
     slug = models.SlugField(max_length=200, unique=True, blank=True)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    discount_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    currency = models.CharField(max_length=10, default="USD")
+    # stock and inventory
     stock_quantity = models.PositiveIntegerField(default=0)
+    is_in_stock = models.BooleanField(default=True)
+    sku = models.CharField(max_length=50, unique=True)
+    barcode = models.CharField(max_length=100, blank=True, null=True)
+    # engagement
+    views = models.PositiveIntegerField(default=0)
+    purchases_count = models.PositiveIntegerField(default=0)
+    rating = models.PositiveIntegerField(
+            default=5,
+            validators=[MinValueValidator(1), MaxValueValidator(5)]
+            )    
+    review_count = models.PositiveIntegerField(default=0)
+    # promotion
+    is_featured = models.BooleanField(default=False)
+    is_new = models.BooleanField(default=False)
+    is_bestseller = models.BooleanField(default=False)
+    is_on_sale = models.BooleanField(default=False)
+
+    # status
+    status = models.CharField(
+    max_length=20,
+    choices=[("draft", "Draft"), ("published", "Published"), ("archived", "Archived")],
+    default="draft",
+        )
+
+    # audit fields
+    created_by = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, related_name="created_products")
+    updated_by = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, related_name="updated_products")
+
+    
     # Foreign key to Category model for product categorization
     # related_name='products' allows easy access to products in a category
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
@@ -144,11 +188,16 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         """Override save method to auto-generate slug if not provided.
         Uses a helper function `generate_unique_slug` to ensure uniqueness."""
+        self.is_in_stock = self.stock_quantity > 0
         if not self.slug:
-            self.slug = generate_unique_slug(Product, self.name, slug_field='slug')
+            self.slug = generate_unique_slug(Product, self.name, slug_field="slug")
         super().save(*args, **kwargs)
+    
+    def get_code(self):
+        return slugify(self.name)[:3].upper()
 
     def get_absolute_url(self):
         """Returns the URL for this product instance.
         Uses Django's reverse function to generate URL based on slug."""
         return reverse('product_detail', kwargs={'slug': self.slug})
+    
