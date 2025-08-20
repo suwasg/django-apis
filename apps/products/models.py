@@ -218,3 +218,21 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.product.name}"
+
+# ----------------------------
+# Product Attributes & Values
+# ----------------------------
+class ProductAttribute(models.Model):
+    """Product attribute type (e.g., Color, Size)."""
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_unique_slug(ProductAttribute, self.name, slug_field='slug')
+        super().save(*args, **kwargs)
+
+
