@@ -4,6 +4,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.text import slugify
+import uuid
 
 from common.utils import generate_unique_slug, generate_uuid
 # Create your models here.
@@ -201,3 +202,19 @@ class Product(models.Model):
         Uses Django's reverse function to generate URL based on slug."""
         return reverse('product_detail', kwargs={'slug': self.slug})
     
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey("Product", on_delete=models.CASCADE, related_name="images") # product.images.all()   # returns all gallery images
+
+    image = models.ImageField(upload_to="products/gallery/")
+    alt_text = models.CharField(max_length=255, blank=True)
+    caption = models.CharField(max_length=255, blank=True)
+    is_default = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-is_default", "id"]
+
+    def __str__(self):
+        return f"Image for {self.product.name}"
