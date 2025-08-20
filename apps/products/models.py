@@ -236,3 +236,12 @@ class ProductAttribute(models.Model):
         super().save(*args, **kwargs)
 
 
+
+class ProductAttributeValue(models.Model):
+    """Specific value for a product attribute (e.g., Red, XL)."""
+    attribute = models.ForeignKey(ProductAttribute, on_delete=models.CASCADE, related_name="values")
+    value = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.attribute.name}: {self.value}"
+
